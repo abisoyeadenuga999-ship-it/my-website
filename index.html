@@ -3,50 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration Form</title>
-    <link rel="stylesheet" href="style.css">
- 
+    <title>Student Grade Tracker</title>
+    
 </head>
 <body>
-    <div class="container">
-        <p>Student id:ALT/SOE/BAR/026/0133</p>
-        <h1>Create an Account</h1>
-        <div id="formFeedback" aria-live="polite"></div>
-        <form id="registrationForm" novalidate>
-            <div class="field-group">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" name="fullName" placeholder="Jane Doe" required>
-                <div class="error-message" id="fullNameError"></div>
-            </div>
+    <h1>Student Grade Tracker</h1>
 
-            <div class="field-group">
-                <label for="email">Email address</label>
-                <input type="email" id="email" name="email" placeholder="jane@example.com" required>
-                <div class="error-message" id="emailError"></div>
-            </div>
+    <form id="student-form">
+        <label>
+            Student Name:
+            <input type="text" id="nameInput" required />
+        </label>
+        <label>
+            Grade:
+            <input type="number" id="gradeInput" min="0" max="100" step="any" required />
+        </label>
+        <button type="submit">Add Student</button>
+    </form>
 
-            <div class="field-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="At least 8 characters" required>
-                <div class="error-message" id="passwordError"></div>
-            </div>
+    <div id="error" aria-live="polite"></div>
 
-            <div class="field-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat your password" required>
-                <div class="error-message" id="confirmPasswordError"></div>
-            </div>
+    <h2>Students</h2>
+    <table id="students-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Grade</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="students-tbody">
+        </tbody>
+    </table>
 
-            <div class="field-group">
-                <label for="age">Age</label>
-                <input type="number" id="age" name="age" placeholder="18" min="0" required>
-                <div class="error-message" id="ageError"></div>
-            </div>
+    <h2>Average Grade</h2>
+    <p id="average">N/A</p>
 
-            <button type="submit">Register</button>
-        </form>
-    </div>
     <script src="script.js"></script>
-   
 </body>
 </html>

@@ -1,100 +1,103 @@
-const form = document.getElementById('registrationForm');
-const feedback = document.getElementById('formFeedback');
+// Student Grade Tracker
 
-const fields = {
-    fullName: document.getElementById('fullName'),
-    email: document.getElementById('email'),
-    password: document.getElementById('password'),
-    confirmPassword: document.getElementById('confirmPassword'),
-    age: document.getElementById('age'),
-};
+const students = [];
+let nextId = 1;
 
-const errorEls = {
-    fullName: document.getElementById('fullNameError'),
-    email: document.getElementById('emailError'),
-    password: document.getElementById('passwordError'),
-    confirmPassword: document.getElementById('confirmPasswordError'),
-    age: document.getElementById('ageError'),
-};
-
-const validators = {
-    fullName(value) {
-        if (!value.trim()) return 'Full name is required.';
-        if (value.trim().length < 3) return 'Please enter at least 3 characters.';
-        return '';
-    },
-    email(value) {
-        if (!value.trim()) return 'Email is required.';
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(value)) return 'Enter a valid email address.';
-        return '';
-    },
-    password(value) {
-        if (!value) return 'Password is required.';
-        if (value.length < 8) return 'Password must be at least 8 characters long.';
-        const numberPattern = /\d/;
-        const letterPattern = /[A-Za-z]/;
-        if (!numberPattern.test(value) || !letterPattern.test(value)) {
-            return 'Password should include letters and numbers.';
-        }
-        return '';
-    },
-    confirmPassword(value) {
-        if (!value) return 'Please confirm your password.';
-        if (value !== fields.password.value) return 'Passwords do not match.';
-        return '';
-    },
-    age(value) {
-        if (!value.trim()) return 'Age is required.';
-        const ageValue = Number(value);
-        if (Number.isNaN(ageValue) || !Number.isInteger(ageValue)) {
-            return 'Enter a valid whole number for age.';
-        }
-        if (ageValue < 13) {
-            return 'You must be at least 13 years old.';
-        }
-        return '';
-    },
-};
-
-function showError(fieldName, message) {
-    errorEls[fieldName].textContent = message;
+function seedStudents() {
+    const scores = [95, 82, 76, 88, 91, 67];
+    for (const grade of scores) {
+        students.push({ id: nextId++, name: 'Abisoye Adenuga', grade });
+    }
 }
 
-function clearErrors() {
-    Object.values(errorEls).forEach(el => el.textContent = '');
-    feedback.textContent = '';
-    feedback.className = '';
+const form = document.getElementById('student-form');
+const nameInput = document.getElementById('nameInput');
+const gradeInput = document.getElementById('gradeInput');
+const tbody = document.getElementById('students-tbody');
+const averageEl = document.getElementById('average');
+const errorEl = document.getElementById('error');
+
+function showError(message) {
+    // simple inline error message
+    errorEl.textContent = message;
+    setTimeout(() => { errorEl.textContent = ''; }, 3000);
 }
 
-function validateField(fieldName) {
-    const value = fields[fieldName].value;
-    const errorMessage = validators[fieldName](value);
-    showError(fieldName, errorMessage);
-    return errorMessage === '';
+function addStudent(name, grade) {
+    const student = { id: nextId++, name, grade };
+    students.push(student);
+    renderStudents();
+    updateAverage();
 }
 
-Object.keys(fields).forEach(fieldName => {
-    fields[fieldName].addEventListener('input', () => {
-        validateField(fieldName);
-        feedback.textContent = '';
-        feedback.className = '';
-    });
-});
+function deleteStudent(id) {
+    const idx = students.findIndex(s => s.id === id);
+    if (idx !== -1) {
+        students.splice(idx, 1);
+        renderStudents();
+        updateAverage();
+    }
+}
 
-form.addEventListener('submit', event => {
-    event.preventDefault();
-    clearErrors();
+function renderStudents() {
+    tbody.innerHTML = '';
+    for (const s of students) {
+        const tr = document.createElement('tr');
 
-    const isValid = Object.keys(fields).every(fieldName => validateField(fieldName));
+        const nameTd = document.createElement('td');
+        nameTd.textContent = s.name;
 
-    if (!isValid) {
-        feedback.textContent = 'Please fix the highlighted errors before submitting.';
-        feedback.className = 'form-error';
+        const gradeTd = document.createElement('td');
+        gradeTd.textContent = s.grade;
+
+        const actionsTd = document.createElement('td');
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.dataset.id = s.id;
+        delBtn.addEventListener('click', () => deleteStudent(s.id));
+        actionsTd.appendChild(delBtn);
+
+        tr.appendChild(nameTd);
+        tr.appendChild(gradeTd);
+        tr.appendChild(actionsTd);
+        tbody.appendChild(tr);
+    }
+}
+
+function updateAverage() {
+    if (students.length === 0) {
+        averageEl.textContent = 'N/A';
+        return;
+    }
+    const sum = students.reduce((acc, s) => acc + s.grade, 0);
+    const avg = sum / students.length;
+    averageEl.textContent = avg.toFixed(2);
+}
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = nameInput.value.trim();
+    const gradeRaw = gradeInput.value;
+    const grade = parseFloat(gradeRaw);
+
+    if (!name) {
+        showError('Student name must not be empty.');
+        return;
+    }
+    if (Number.isNaN(grade) || gradeRaw === '') {
+        showError('Grade must be a number between 0 and 100.');
+        return;
+    }
+    if (grade < 0 || grade > 100) {
+        showError('Grade must be between 0 and 100.');
         return;
     }
 
-    feedback.textContent = 'Registration successful! Your form has been submitted.';
-    feedback.className = 'success-message';
+    addStudent(name, grade);
     form.reset();
+    nameInput.focus();
 });
+
+seedStudents();
+renderStudents();
+updateAverage();
