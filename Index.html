@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-nav">
+            <div class="brand">
+                <h1>Weather App</h1>
+            </div>
+            <form id="weather-search-form" class="top-search" aria-label="Search weather by city">
+                <label for="city-input">City</label>
+                <input type="search" id="city-input" name="city" placeholder="Enter city name" required>
+                <button type="submit">Search</button>
+            </form>
+            <div id="error-message" class="error-message" role="alert" aria-live="assertive"></div>
+        </header>
+
+        <main>
+            <section class="hero-section" aria-label="Current weather hero">
+                <div class="hero-icon" id="weather-icon">☀️</div>
+                <div class="hero-copy">
+                    <p class="hero-location"><span id="city-name">City Name</span>, <span id="country-name">Country</span></p>
+                    <p class="hero-temperature"><strong id="temperature">--°</strong></p>
+                    <p id="weather-description">Weather description</p>
+                </div>
+            </section>
+
+            <section class="stats-row" aria-label="Weather statistics">
+                <div class="stat-card">
+                    <h3>Humidity</h3>
+                    <p id="humidity">--%</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Wind Speed</h3>
+                    <p id="wind-speed">-- km/h</p>
+                </div>
+                <div class="stat-card">
+                    <h3>UV Index</h3>
+                    <p id="uv-index">--</p>
+                </div>
+            </section>
+
+            <section class="forecast-section" aria-label="5 day forecast">
+                <h2>5-Day Forecast</h2>
+                <div id="forecast-list" class="forecast-list">
+                    <article class="forecast-day" data-day="1">
+                        <h3>Day 1</h3>
+                        <p class="forecast-date">Date</p>
+                        <p class="forecast-temp">Temp</p>
+                        <p class="forecast-desc">Description</p>
+                    </article>
+                    <article class="forecast-day" data-day="2">
+                        <h3>Day 2</h3>
+                        <p class="forecast-date">Date</p>
+                        <p class="forecast-temp">Temp</p>
+                        <p class="forecast-desc">Description</p>
+                    </article>
+                    <article class="forecast-day" data-day="3">
+                        <h3>Day 3</h3>
+                        <p class="forecast-date">Date</p>
+                        <p class="forecast-temp">Temp</p>
+                        <p class="forecast-desc">Description</p>
+                    </article>
+                    <article class="forecast-day" data-day="4">
+                        <h3>Day 4</h3>
+                        <p class="forecast-date">Date</p>
+                        <p class="forecast-temp">Temp</p>
+                        <p class="forecast-desc">Description</p>
+                    </article>
+                    <article class="forecast-day" data-day="5">
+                        <h3>Day 5</h3>
+                        <p class="forecast-date">Date</p>
+                        <p class="forecast-temp">Temp</p>
+                        <p class="forecast-desc">Description</p>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
